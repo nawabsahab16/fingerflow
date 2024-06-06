@@ -1,7 +1,9 @@
+const words = 'in one good real one not school set...'.split(' ');
+const wordsCount = words.length;
+const gameTime = 30 * 1000;
 window.timer = null;
 window.gameStart = null;
 window.pauseTime = 0;
-window.gameTime = 30 * 1000; 
 
 function addClass(el, name) {
   el.className += ' ' + name;
@@ -12,8 +14,8 @@ function removeClass(el, name) {
 }
 
 function randomWord() {
-  const randomIndex = Math.ceil(Math.random() * wordsCount);
-  return words[randomIndex - 1];
+  const randomIndex = Math.floor(Math.random() * wordsCount);
+  return words[randomIndex];
 }
 
 function formatWord(word) {
@@ -21,29 +23,16 @@ function formatWord(word) {
 }
 
 function newGame() {
-  const selectedTime = parseInt(document.getElementById('timeSelector').value, 10);
-  window.gameTime = selectedTime;
-
   document.getElementById('words').innerHTML = '';
   for (let i = 0; i < 200; i++) {
     document.getElementById('words').innerHTML += formatWord(randomWord());
   }
   addClass(document.querySelector('.word'), 'current');
   addClass(document.querySelector('.letter'), 'current');
-  document.getElementById('info').innerHTML = (selectedTime / 1000) + '';
+  document.getElementById('info').innerHTML = (gameTime / 1000) + '';
   window.timer = null;
   window.gameStart = null;
-
-  document.getElementById('motivationalMessage').innerHTML = '';
 }
-
-const motivationalMessages = [
-  'Great job! 🎉',
-  'Keep it up! 💪',
-  'You did awesome! 🌟',
-  'Fantastic effort! 🏆',
-  'Well done! 👍'
-];
 
 function getWpm() {
   const words = [...document.querySelectorAll('.word')];
@@ -56,7 +45,7 @@ function getWpm() {
     const correctLetters = letters.filter(letter => letter.className.includes('correct'));
     return incorrectLetters.length === 0 && correctLetters.length === letters.length;
   });
-  return correctWords.length / window.gameTime * 60000;
+  return correctWords.length / gameTime * 60000;
 }
 
 function gameOver() {
@@ -64,12 +53,6 @@ function gameOver() {
   addClass(document.getElementById('game'), 'over');
   const result = getWpm();
   document.getElementById('info').innerHTML = `WPM: ${result}`;
-
-  // Show a motivational message
-  if (window.gameStart !== null) { // Ensure this only runs when the timer ends the game
-    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-    document.getElementById('motivationalMessage').innerHTML = randomMessage;
-  }
 }
 
 document.getElementById('game').addEventListener('keyup', ev => {
@@ -82,7 +65,7 @@ document.getElementById('game').addEventListener('keyup', ev => {
   const isBackspace = key === 'Backspace';
   const isFirstLetter = currentLetter === currentWord.firstChild;
 
-  if (document.querySelector('#game.over')) {
+  if (document.querySelector('#game.over') !== null) {
     return;
   }
 
@@ -94,7 +77,7 @@ document.getElementById('game').addEventListener('keyup', ev => {
       const currentTime = (new Date()).getTime();
       const msPassed = currentTime - window.gameStart;
       const sPassed = Math.round(msPassed / 1000);
-      const sLeft = Math.round((window.gameTime / 1000) - sPassed);
+      const sLeft = Math.round((gameTime / 1000) - sPassed);
       if (sLeft <= 0) {
         gameOver();
         return;
@@ -169,9 +152,8 @@ document.getElementById('game').addEventListener('keyup', ev => {
 });
 
 document.getElementById('newGameBtn').addEventListener('click', () => {
-  clearInterval(window.timer);
+  gameOver();
   newGame();
 });
 
 newGame();
-
