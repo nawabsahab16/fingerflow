@@ -1,5 +1,5 @@
 <h2>Real-Time Word Typing Validation </h2>
-real-time validation for typed words, providing immediate feedback by highlighting correct and incorrect letters, which improved user engagement and accuracy in typing practice.![Screenshot (439)](https://github.com/nawabsahab16/fingerflow/assets/117763400/0951b3dc-8b02-4e39-be67-2e52505a2c65)
+real-time validation for typed words, providing immediate feedback by highlighting correct and incorrect letters, which improved user engagement and accuracy in typing practice.
 
 ![Screenshot (439)](https://github.com/nawabsahab16/fingerflow/assets/117763400/b5558d61-11e7-4f80-8f85-535b256e627b)
 
